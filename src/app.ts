@@ -3,24 +3,31 @@ import http from "http";
 import helmet from "helmet";
 import Routes from "./routes";
 import cors from "cors";
+import * as dotenv from "dotenv";
+import { connectToDatabase } from "./services/DatabaseService";
+import serverless from "serverless-http";
 
 const app: Application = express();
 const server = http.createServer(app);
 
 app.use(helmet.hidePoweredBy());
-app.use(Routes);
 
 app.use(
   cors({
     origin: "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    preflightContinue: false,
     optionsSuccessStatus: 204,
   })
 );
 
-const PORT = 5000;
-server.listen(PORT);
+app.use(Routes);
+
+//server.listen(5000);
+
 server.on("listening", () => {
+  dotenv.config();
+
   console.info("server up listening");
 });
+
+module.exports.handler = serverless(app);
