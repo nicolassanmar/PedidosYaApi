@@ -152,6 +152,7 @@ const getAllRestaurantsInArea = async (lat: number, long: number) => {
         restaurantId: restaurante.id,
         deliveryTimeMaxMinutes: restaurante.deliveryTimeMaxMinutes,
         deliveryTimeMinMinutes: restaurante.deliveryTimeMinMinutes,
+        opened: restaurante.opened,
         generalScore: restaurante.generalScore,
         link: restaurante.link,
         nextHour: restaurante.nextHour,

@@ -6,6 +6,7 @@ export default class RestauranteModel {
     public restaurantId: string,
     public deliveryTimeMaxMinutes: number,
     public deliveryTimeMinMinutes: number,
+    public opened: number,
     public generalScore: number,
     public link: string,
     public nextHour: string,
