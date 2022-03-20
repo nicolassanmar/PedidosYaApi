@@ -69,14 +69,30 @@ const getProductsFromRestaurantID = async (
   };
 };
 
+const wait = (ms: number) => new Promise((res) => setTimeout(res, ms));
+const callWithRetry = async (fn: () => any, depth = 1): Promise<any> => {
+  try {
+    return await fn();
+  } catch (e) {
+    if (depth > 7) {
+      throw e;
+    }
+    await wait(2 ** depth * 10 + 20 * Math.random());
+
+    return callWithRetry(fn, depth + 1);
+  }
+};
+
 const getProductsFromRestaurantIDs = async (restaurantIDs: string[]) => {
   const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
   const promises = restaurantIDs.map(async (restaurantID: string) => {
     try {
       return await getProductsFromRestaurantID(restaurantID);
     } catch (e) {
-      await delay(1950 + Math.random() * 50);
-      return await getProductsFromRestaurantID(restaurantID);
+      await delay(Math.random() * 50);
+      return await callWithRetry(
+        await getProductsFromRestaurantID(restaurantID)
+      );
     }
   });
   // const productos = await batchPromises(

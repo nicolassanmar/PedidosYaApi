@@ -62,6 +62,19 @@ const getProductsFromRestaurantID = (restaurantID) => __awaiter(void 0, void 0, 
         products: productosPorSeccion.flat(),
     };
 });
+const wait = (ms) => new Promise((res) => setTimeout(res, ms));
+const callWithRetry = (fn, depth = 1) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        return yield fn();
+    }
+    catch (e) {
+        if (depth > 7) {
+            throw e;
+        }
+        yield wait(Math.pow(2, depth) * 10 + 20 * Math.random());
+        return callWithRetry(fn, depth + 1);
+    }
+});
 const getProductsFromRestaurantIDs = (restaurantIDs) => __awaiter(void 0, void 0, void 0, function* () {
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
     const promises = restaurantIDs.map((restaurantID) => __awaiter(void 0, void 0, void 0, function* () {
@@ -69,8 +82,8 @@ const getProductsFromRestaurantIDs = (restaurantIDs) => __awaiter(void 0, void 0
             return yield getProductsFromRestaurantID(restaurantID);
         }
         catch (e) {
-            yield delay(1950 + Math.random() * 50);
-            return yield getProductsFromRestaurantID(restaurantID);
+            yield delay(Math.random() * 50);
+            return yield callWithRetry(yield getProductsFromRestaurantID(restaurantID));
         }
     }));
     // const productos = await batchPromises(
