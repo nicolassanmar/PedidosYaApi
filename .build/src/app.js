@@ -38,7 +38,7 @@ app.use((0, cors_1.default)({
     optionsSuccessStatus: 204,
 }));
 app.use(routes_1.default);
-//server.listen(5000);
+// server.listen(5000);
 server.on("listening", () => {
     dotenv.config();
     console.info("server up listening");

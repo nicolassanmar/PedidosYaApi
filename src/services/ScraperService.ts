@@ -70,16 +70,16 @@ const getProductsFromRestaurantID = async (
 };
 
 const wait = (ms: number) => new Promise((res) => setTimeout(res, ms));
-const callWithRetry = async (fn: () => any, depth = 1): Promise<any> => {
+const callWithRetry = async (fn: any, depth = 1, param: any): Promise<any> => {
   try {
-    return await fn();
+    return await fn(param);
   } catch (e) {
     if (depth > 7) {
       throw e;
     }
     await wait(2 ** depth * 10 + 20 * Math.random());
 
-    return callWithRetry(fn, depth + 1);
+    return callWithRetry(fn, depth + 1, param);
   }
 };
 
@@ -90,9 +90,7 @@ const getProductsFromRestaurantIDs = async (restaurantIDs: string[]) => {
       return await getProductsFromRestaurantID(restaurantID);
     } catch (e) {
       await delay(Math.random() * 50);
-      return await callWithRetry(
-        await getProductsFromRestaurantID(restaurantID)
-      );
+      return await callWithRetry(getProductsFromRestaurantID, 0, restaurantID);
     }
   });
   // const productos = await batchPromises(
