@@ -72,13 +72,13 @@ const getProductsFromRestaurantID = async (
 const wait = (ms: number) => new Promise((res) => setTimeout(res, ms));
 const callWithRetry = async (fn: any, depth = 1, param: any): Promise<any> => {
   try {
+    console.log(depth, param);
     return await fn(param);
   } catch (e) {
     if (depth > 7) {
       throw e;
     }
-    await wait(2 ** depth * 10 + 20 * Math.random());
-
+    await wait(2 ** depth * 50 + 20 * Math.random());
     return callWithRetry(fn, depth + 1, param);
   }
 };
@@ -93,59 +93,13 @@ const getProductsFromRestaurantIDs = async (restaurantIDs: string[]) => {
       return await callWithRetry(getProductsFromRestaurantID, 0, restaurantID);
     }
   });
-  // const productos = await batchPromises(
-  //   2,
-  //   restaurantIDs,
-  //   (i: any) =>
-  //     new Promise((resolve, reject) => {
-  //       // The iteratee will fire after each batch resulting in the following behaviour:
-  //       // @ 100ms resolve items 1 and 2 (first batch of 2)
-  //       // @ 200ms resolve items 3 and 4 (second batch of 2)
-  //       // @ 300ms resolve remaining item 5 (last remaining batch)
-  //       setTimeout(() => {
-  //         getProductsFromRestaurantID(i);
-  //       }, 100);
-  //     })
-  // );
-  // return productos;
 
-  // they resolve all at once
   const productosPorRestaurante = await Promise.all(promises);
   const productosIndexados: { [key: string]: any[] } = {};
   productosPorRestaurante.forEach((producto) => {
     productosIndexados[producto.restaurantID] = producto.products;
   });
   return productosIndexados;
-  // resolve promises 25 at a time
-
-  // const requestsAtATime = 25;
-  // const waitMs = 500;
-  // const productosPorRestaurante: any[] = [];
-  // let i = 0;
-  // const allPromises: Promise<any>[][] = [];
-  // while (i < restaurantIDs.length) {
-  //   const promises25: Promise<any>[] = [];
-  //   for (let j = 0; j < requestsAtATime && i < restaurantIDs.length; j++) {
-  //     promises25.push(promises[i]);
-  //     i++;
-  //   }
-  //   allPromises.push(promises25);
-  // }
-
-  // async function batchRequestsAtMs(i: number) {
-  //   const productosPorRestaurante5 = await Promise.all(allPromises[i]);
-  //   productosPorRestaurante.push(...productosPorRestaurante5);
-  //   if (i < allPromises.length) {
-  //     setTimeout(async () => {
-  //       i++;
-  //       return await batchRequestsAtMs(i);
-  //     }, waitMs);
-  //   } else return 0;
-  // }
-
-  // batchRequestsAtMs(0).then(() => {
-  //   return productosPorRestaurante;
-  // });
 };
 
 const getAllRestaurantsInArea = async (lat: number, long: number) => {
