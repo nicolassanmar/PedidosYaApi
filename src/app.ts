@@ -4,7 +4,7 @@ import helmet from "helmet";
 import Routes from "./routes";
 import cors from "cors";
 import * as dotenv from "dotenv";
-import { connectToDatabase } from "./services/DatabaseService";
+//import { connectToDatabase } from "./services/DatabaseService";
 import serverless from "serverless-http";
 
 const app: Application = express();
