@@ -1,4 +1,6 @@
 {
+  "name": "pedidosyaapi",
+  "version": "1.0.0",
   "dependencies": {
     "@types/cheerio": "^0.22.30",
     "axios": "^0.25.0",
@@ -29,8 +31,7 @@
   "scripts": {
     "start": "node dist/src/app.js",
     "dev": "start http://localhost:5000/scraper & nodemon src/app.ts ",
-    "build": "tsc -p .",
-    "postinstall": "tsc -p ."
+    "postinstall": "tsc"
   },
   "engines": {
     "node": "14.17.6",
