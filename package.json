@@ -30,7 +30,7 @@
     "start": "node dist/app.js",
     "dev": "start http://localhost:5000/scraper & nodemon src/app.ts ",
     "build": "tsc -p .",
-    "postinstall": "tsc"
+    "postinstall": "tsc -p ."
   },
   "engines": {
     "node": "12.18.3"
