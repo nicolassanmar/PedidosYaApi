@@ -33,7 +33,7 @@
     "postinstall": "tsc -p ."
   },
   "engines": {
-    "node": "12.18.3",
+    "node": "14.17.6",
     "npm": "6.14.7"
   }
 }
