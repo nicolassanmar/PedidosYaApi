@@ -27,12 +27,13 @@
     "typescript": "^4.5.5"
   },
   "scripts": {
-    "start": "node dist/app.js",
+    "start": "node .build/src/app.js",
     "dev": "start http://localhost:5000/scraper & nodemon src/app.ts ",
     "build": "tsc -p .",
     "postinstall": "tsc -p ."
   },
   "engines": {
-    "node": "12.18.3"
+    "node": "12.18.3",
+    "npm": "6.14.7"
   }
 }
