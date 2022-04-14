@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import ScraperService from "../services/ScraperService";
-import * as DatabaseService from "../services/DatabaseService";
+import * as DatabaseService from "../services/oldDatabaseService";
 
 const router = Router();
 

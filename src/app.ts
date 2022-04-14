@@ -1,12 +1,12 @@
+import "dotenv/config";
 import express, { Application, Request, Response } from "express";
 import http from "http";
 import helmet from "helmet";
 import Routes from "./routes";
 import cors from "cors";
 import * as dotenv from "dotenv";
-//import { connectToDatabase } from "./services/DatabaseService";
 import serverless from "serverless-http";
-
+import databaseConnection from "./services/databaseConnection";
 const app: Application = express();
 const server = http.createServer(app);
 
@@ -21,6 +21,8 @@ app.use(
 );
 
 app.use(Routes);
+
+databaseConnection();
 
 server.listen(process.env.PORT || 5000);
 

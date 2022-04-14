@@ -1,6 +1,7 @@
 import { Request, Response, Router } from "express";
 import ProductoModel from "../models/ProductoModel";
 import ScraperService from "../services/ScraperService";
+import * as LogDatabaseService from "../services/LogDatabaseService";
 const router = Router();
 
 const documentation = async (req: Request, res: Response) => {
@@ -96,6 +97,8 @@ const getAllProductsInArea = async (req: Request, res: Response) => {
         products: productData[restaurante.restaurantId as string],
       };
     });
+
+    LogDatabaseService.saveLocationLog(Number(lat), Number(long));
 
     return res.send(data);
   } catch (error) {
